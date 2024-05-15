@@ -1,0 +1,54 @@
+@Metadata.layer: #CORE
+@UI: {
+  headerInfo: {
+    typeName: 'Service Consumption',
+    typeNamePlural: 'Service Consumptions'
+  }
+}
+annotate view /ESRCC/C_UploadStaging with
+{
+  @UI.facet: [
+    { label: 'File Information',    id: 'Attachment',     type: #COLLECTION,               position: 10                                                                        },
+    { label: 'Invoice Details',     id: 'Invoicedet',     type: #IDENTIFICATION_REFERENCE, position: 20,                             parentId: 'File',        purpose: #STANDARD },
+      {                               id: 'Upload',         type: #FIELDGROUP_REFERENCE,     position: 20  ,targetQualifier: 'Upload', parentId: 'Attachment',  purpose: #STANDARD }]
+//  @UI.lineItem: [{ position: 10 }]
+//  @UI.identification: [{ position: 10 }]
+//  @EndUserText.label: 'Applciation'
+//  @Ui.hidden: true
+//  Application;
+//  @UI.lineItem: [{ position: 20 }]
+//  @UI.identification: [{ position: 10 }]
+//  @EndUserText.label: 'SubApplciation'
+//  SubApplication;
+//  @UI.lineItem: [{ position: 30 }]
+//  @UI.identification: [{ position: 10 }]
+//  CreatedBy;
+  @UI: {
+      lineItem: [{
+          position: 40
+      }],
+//      identification: [{
+//          position: 40
+////          label: 'Excel Upload'
+//      }],
+            fieldGroup: [{
+                qualifier: 'Upload',
+                position: 40,
+                label: 'Excel Upload'
+            }]
+  }
+  @EndUserText.label: 'Attachment'
+  DataStream;
+  @UI.lineItem: [{ position: 50 }]
+  CreatedAt;
+  @UI.lineItem: [{ position: 60 }]
+  @UI.identification: [{ position: 900 }]
+  @EndUserText.label: 'Mime Type'
+  MimeType;
+  @UI.lineItem: [{ position: 70 }]
+  @UI.identification: [{ position: 100 }]
+  @EndUserText.label: 'File Name'
+  Filename;
+  @UI.lineItem: [{ position: 80 }]
+  TableName;
+}

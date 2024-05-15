@@ -1,0 +1,30 @@
+managed implementation in class /esrcc/bp_i_uploadstaging unique;
+strict ( 2 );
+
+define behavior for /ESRCC/I_UploadStaging alias UploadStaging
+persistent table /esrcc/upld_stg
+lock master
+authorization master ( global )
+//etag master <field_name>
+{
+
+  field ( mandatory : create )
+   Application,
+   SubApplication,
+   CreatedBy;
+
+  create;
+  update;
+  delete;
+  static action uploadExcelData result [1] $self;
+
+  mapping for /esrcc/upld_stg
+  {
+    CreatedAt = created_at;
+    CreatedBy = created_by;
+    DataStream = data_stream;
+    MimeType = mime_type;
+    SubApplication = sub_application;
+
+  }
+}
