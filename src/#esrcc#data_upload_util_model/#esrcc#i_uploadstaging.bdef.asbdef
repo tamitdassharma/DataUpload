@@ -1,30 +1,47 @@
 managed implementation in class /esrcc/bp_i_uploadstaging unique;
 strict ( 2 );
-
+with draft;
 define behavior for /ESRCC/I_UploadStaging alias UploadStaging
-persistent table /esrcc/upld_stg
+persistent table /ESRCC/UPLD_STG
+draft table /esrcc/d_upld
 lock master
-authorization master ( global )
-//etag master <field_name>
+total etag LocalLastChangedAt
+authorization master ( instance )
+etag master LastChangedAt
 {
-
-  field ( mandatory : create )
-   Application,
-   SubApplication,
-   CreatedBy;
-
+  field ( mandatory : create ) Application;
+  field ( numbering : managed ) UploadUIID;
+  field ( readonly ) UploadUIID, LastChangedAt, LastChangedBy, LocalLastChangedAt, CreatedBy, CreatedAt;
   create;
   update;
   delete;
-  static action uploadExcelData result [1] $self;
+
+  // Logic to convert uploaded excel into internal table and save to the child entity is written here
+  action ( features : instance ) uploadExcelData  result [1] $self;
+
+  // Logic to trigger action uploadExcelData
+  determination uploadfields on save { field Filename ; }
+
+  draft action Edit ;
+  draft action Activate;
+  draft action Discard;
+  draft action Resume;
+
+  draft determine action Prepare ;
 
   mapping for /esrcc/upld_stg
   {
-    CreatedAt = created_at;
-    CreatedBy = created_by;
+    UploadUIID = upload_uuid;
     DataStream = data_stream;
     MimeType = mime_type;
-    SubApplication = sub_application;
+    Application = application;
+    Filename = filename;
+    TableName = table_name;
+    CreatedAt = created_at;
+    CreatedBy = created_by;
+    LocalLastChangedAt = local_last_changed_at;
+    LastChangedBy = last_changed_by;
+    LastChangedAt = last_changed_at;
 
   }
 }

@@ -1,0 +1,4 @@
+@EndUserText.label: 'Excel Upload Staging'
+define service /ESRCC/UI_UPLOADSTAGING {
+  expose /ESRCC/C_UPLOADSTAGING as ExcelUpload;
+}

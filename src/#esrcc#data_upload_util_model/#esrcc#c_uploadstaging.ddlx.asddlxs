@@ -1,54 +1,73 @@
 @Metadata.layer: #CORE
 @UI: {
   headerInfo: {
-    typeName: 'Service Consumption',
-    typeNamePlural: 'Service Consumptions'
+    typeName: 'Excel Upload',
+    typeNamePlural: 'Excel Uploads'
   }
 }
-annotate view /ESRCC/C_UploadStaging with
+
+annotate view /ESRCC/C_UPLOADSTAGING with
 {
-  @UI.facet: [
-    { label: 'File Information',    id: 'Attachment',     type: #COLLECTION,               position: 10                                                                        },
-    { label: 'Invoice Details',     id: 'Invoicedet',     type: #IDENTIFICATION_REFERENCE, position: 20,                             parentId: 'File',        purpose: #STANDARD },
-      {                               id: 'Upload',         type: #FIELDGROUP_REFERENCE,     position: 20  ,targetQualifier: 'Upload', parentId: 'Attachment',  purpose: #STANDARD }]
-//  @UI.lineItem: [{ position: 10 }]
-//  @UI.identification: [{ position: 10 }]
-//  @EndUserText.label: 'Applciation'
-//  @Ui.hidden: true
-//  Application;
-//  @UI.lineItem: [{ position: 20 }]
-//  @UI.identification: [{ position: 10 }]
-//  @EndUserText.label: 'SubApplciation'
-//  SubApplication;
-//  @UI.lineItem: [{ position: 30 }]
-//  @UI.identification: [{ position: 10 }]
-//  CreatedBy;
-  @UI: {
-      lineItem: [{
-          position: 40
-      }],
-//      identification: [{
-//          position: 40
-////          label: 'Excel Upload'
-//      }],
-            fieldGroup: [{
-                qualifier: 'Upload',
-                position: 40,
-                label: 'Excel Upload'
-            }]
-  }
-  @EndUserText.label: 'Attachment'
+
+  @UI.facet: 
+[    {
+                 label: 'General Information',
+                 id: 'GeneralInfo',
+                 type: #COLLECTION,
+                 position: 10
+                 },
+                 { id:            'Invoicedet',
+                   purpose:       #STANDARD,
+                   type:          #IDENTIFICATION_REFERENCE,
+                   label:         'Data Upload Scenario',
+                   parentId: 'GeneralInfo',
+                   position:      10 },
+                 {
+                   id: 'AdminInfo',
+                   purpose: #STANDARD,
+                   type: #FIELDGROUP_REFERENCE,
+                   parentId: 'GeneralInfo',
+                   label: 'Admin Details',
+                   position: 20,
+                   targetQualifier: 'admin'
+                 },   
+                 {
+                   id: 'UploadInfo',
+                   purpose: #STANDARD,
+                   type: #FIELDGROUP_REFERENCE,
+                   parentId: 'GeneralInfo',
+                   label: 'Attachment Details',
+                   position: 30,
+                   targetQualifier: 'Upload'
+                 } ]
+                 
+  @UI: { lineItem:       [ { position: 10, importance: #HIGH , label: 'Scenario'} ] ,
+          identification: [ { position: 10 , label: 'Scenario' } ] }
+  @UI.selectionField: [{position: 10}]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_UPLOADSCENARIOS', element: 'Application' }, useForValidation: true }]        
+  @UI.textArrangement: #TEXT_ONLY
+  Application;
+  @UI:
+  { fieldGroup:     [ { position: 10, qualifier: 'Upload' , label: 'Attachment'} ]}
   DataStream;
-  @UI.lineItem: [{ position: 50 }]
-  CreatedAt;
-  @UI.lineItem: [{ position: 60 }]
-  @UI.identification: [{ position: 900 }]
-  @EndUserText.label: 'Mime Type'
+
+  @UI.hidden: true
   MimeType;
-  @UI.lineItem: [{ position: 70 }]
-  @UI.identification: [{ position: 100 }]
+
+  @UI: { lineItem:       [ { position: 15, importance: #HIGH } ] }
   @EndUserText.label: 'File Name'
   Filename;
-  @UI.lineItem: [{ position: 80 }]
-  TableName;
+  @UI: { lineItem:       [ { position: 20, importance: #HIGH } ]  }
+    @UI:
+  { fieldGroup:     [ { position: 10, qualifier: 'admin' } ]}
+  CreatedBy;
+  @UI: { lineItem:       [ { position: 30, importance: #HIGH } ] }
+  @UI: { fieldGroup:     [ { position: 20, qualifier: 'admin' } ]}
+  CreatedAt;
+  @UI: { lineItem:       [ { position: 40, importance: #HIGH } ] }
+  @UI: { fieldGroup:     [ { position: 30, qualifier: 'admin' } ]}
+  LastChangedBy;
+  @UI: { lineItem:       [ { position: 50, importance: #HIGH } ] }
+  @UI: { fieldGroup:     [ { position: 40, qualifier: 'admin' } ]}
+  LastChangedAt;
 }

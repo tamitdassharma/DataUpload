@@ -1,25 +1,32 @@
-@AbapCatalog.viewEnhancementCategory: [ #NONE ]
+@EndUserText.label: 'Excel Upload'
 @AccessControl.authorizationCheck: #NOT_REQUIRED
-@EndUserText.label: 'Data Upload Staging Projection'
-@Metadata.ignorePropagatedAnnotations: true
 @Metadata.allowExtensions: true
-define root view entity /ESRCC/C_UploadStaging
-  provider contract transactional_query
-  as projection on /ESRCC/I_UploadStaging
-  //composition of target_data_source_name as _association_name
+define root view entity /ESRCC/C_UPLOADSTAGING 
+as projection on /ESRCC/I_UploadStaging
 {
-
-  key Application,
-  key SubApplication,
-  key CreatedBy,
-      DataStream,
-      
+    key UploadUIID,
+      @ObjectModel.text.element: [ 'applicationtext' ]
+      Application,
+      @Semantics.largeObject: {          
+              mimeType: 'MimeType',
+              fileName: 'Filename',
+              contentDispositionPreference: #INLINE
+          }   
+      DataStream,           
+      @Semantics.mimeType: true
+      MimeType,      
+      Filename,      
+      TableName,
+      @Semantics.user.createdBy: true
+      CreatedBy,
+      @Semantics.systemDateTime.createdAt: true
       CreatedAt,
+      @Semantics.user.lastChangedBy: true
+      LastChangedBy,
+      @Semantics.systemDateTime.lastChangedAt: true
+      LastChangedAt,
+      @Semantics.systemDateTime.localInstanceLastChangedAt: true
+      LocalLastChangedAt,
       
-      MimeType,
-      
-      Filename,
-      
-      TableName
-      //    _association_name // Make association public
+      _UploadScenarios.text as applicationtext
 }

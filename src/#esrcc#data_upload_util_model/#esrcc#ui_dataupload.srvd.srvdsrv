@@ -1,4 +1,0 @@
-@EndUserText.label: 'Data Upload Utility'
-define service /ESRCC/UI_DataUpload {
-  expose /ESRCC/C_UploadStaging as UploadData;
-}
