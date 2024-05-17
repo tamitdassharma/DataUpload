@@ -1,8 +1,8 @@
 @Metadata.layer: #CORE
 @UI: {
   headerInfo: {
-    typeName: 'Excel Upload',
-    typeNamePlural: 'Excel Uploads'
+    typeName: 'Data Upload',
+    typeNamePlural: 'Data Uploads'
   }
 }
 
@@ -11,44 +11,49 @@ annotate view /ESRCC/C_UPLOADSTAGING with
 
   @UI.facet: 
 [    {
-                 label: 'General Information',
-                 id: 'GeneralInfo',
-                 type: #COLLECTION,
-                 position: 10
-                 },
-                 { id:            'Invoicedet',
-                   purpose:       #STANDARD,
-                   type:          #IDENTIFICATION_REFERENCE,
-                   label:         'Data Upload Scenario',
-                   parentId: 'GeneralInfo',
-                   position:      10 },
-                 {
-                   id: 'AdminInfo',
+       label: 'General Information',
+          id: 'GeneralInfo',
+        type: #COLLECTION,
+        position: 10
+      },
+                  {
+                   id: 'ScenarioInfo',
                    purpose: #STANDARD,
                    type: #FIELDGROUP_REFERENCE,
                    parentId: 'GeneralInfo',
-                   label: 'Admin Details',
-                   position: 20,
-                   targetQualifier: 'admin'
-                 },   
+                   label: 'Data Upload Scenario',
+                   position: 10,
+                   targetQualifier: 'scenario'
+                 },
                  {
                    id: 'UploadInfo',
                    purpose: #STANDARD,
                    type: #FIELDGROUP_REFERENCE,
                    parentId: 'GeneralInfo',
                    label: 'Attachment Details',
-                   position: 30,
+                   position: 20,
                    targetQualifier: 'Upload'
-                 } ]
+                 },    
+                 {
+                   id: 'AdminInfo',
+                   purpose: #STANDARD,
+                   type: #FIELDGROUP_REFERENCE,
+                   parentId: 'GeneralInfo',
+                   label: 'Admin Details',
+                   position: 30,
+                   targetQualifier: 'admin'
+                 }]
                  
-  @UI: { lineItem:       [ { position: 10, importance: #HIGH , label: 'Scenario'} ] ,
-          identification: [ { position: 10 , label: 'Scenario' } ] }
+  @UI: { lineItem:       [ { position: 10, importance: #HIGH , label: 'Scenario'} ] }
+  @UI:
+  { fieldGroup:     [ { position: 10, qualifier: 'scenario' , label: 'Scenario'} ]}
   @UI.selectionField: [{position: 10}]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_UPLOADSCENARIOS', element: 'Application' }, useForValidation: true }]        
   @UI.textArrangement: #TEXT_ONLY
   Application;
+  @UI.lineItem: [{ hidden: true }]
   @UI:
-  { fieldGroup:     [ { position: 10, qualifier: 'Upload' , label: 'Attachment'} ]}
+  { fieldGroup:     [ { position: 20, qualifier: 'Upload' , label: 'Upload File'} ]}
   DataStream;
 
   @UI.hidden: true
@@ -57,6 +62,17 @@ annotate view /ESRCC/C_UPLOADSTAGING with
   @UI: { lineItem:       [ { position: 15, importance: #HIGH } ] }
   @EndUserText.label: 'File Name'
   Filename;
+  @UI.lineItem: [{ hidden: true }]
+  @UI:
+  { fieldGroup:     [ { position: 20, qualifier: 'scenario' , label: 'Download Template'} ]}
+  tmpDataStream;
+  @UI: { lineItem:       [ { position: 25, importance: #HIGH, criticality: 'statuscriticallity'} ] }
+  @UI:
+  { fieldGroup:     [ { position: 30, qualifier: 'scenario', criticality: 'statuscriticallity'} ]}
+  @UI.selectionField: [{position: 20}]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_UPLOADSTATUS', element: 'Status' } }]        
+  @UI.textArrangement: #TEXT_ONLY
+  Status;
   @UI: { lineItem:       [ { position: 20, importance: #HIGH } ]  }
     @UI:
   { fieldGroup:     [ { position: 10, qualifier: 'admin' } ]}
@@ -67,7 +83,22 @@ annotate view /ESRCC/C_UPLOADSTAGING with
   @UI: { lineItem:       [ { position: 40, importance: #HIGH } ] }
   @UI: { fieldGroup:     [ { position: 30, qualifier: 'admin' } ]}
   LastChangedBy;
-  @UI: { lineItem:       [ { position: 50, importance: #HIGH } ] }
+  @UI: { lineItem:       [ { position: 50, importance: #MEDIUM } ] }
   @UI: { fieldGroup:     [ { position: 40, qualifier: 'admin' } ]}
   LastChangedAt;
+  
+  @UI.hidden: true
+  statuscriticallity;
+  @UI.hidden: true
+  uploadstatustext;
+  @UI.hidden: true
+  applicationtext;
+  @UI.hidden: true
+  TableName;
+  @UI.hidden: true
+  tmpFilename;
+  @UI.hidden: true
+  tmpMimeType;
+  @UI.hidden: true
+  UploadUIID;
 }

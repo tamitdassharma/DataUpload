@@ -2,7 +2,9 @@
 "BASEINFO":
 {
 "FROM":
-[],
+[
+"DDCDS_CUSTOMER_DOMAIN_VALUE_T"
+],
 "ASSOCIATED":
 [],
 "BASE":

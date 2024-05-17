@@ -6,7 +6,9 @@ define root view entity /ESRCC/I_UploadStaging
   
   association [0..1] to /ESRCC/I_UPLOADSCENARIOS as _UploadScenarios
     on _UploadScenarios.Application = $projection.Application
-  //composition of target_data_source_name as _association_name
+ 
+  association [0..1] to /ESRCC/I_UPLOADSTATUS as _UploadStatus
+    on _UploadStatus.Status = $projection.Status
 {
   key upload_uuid as UploadUIID,
   application     as Application,
@@ -22,6 +24,7 @@ define root view entity /ESRCC/I_UploadStaging
       mime_type       as MimeType,
       filename        as Filename,
       table_name      as TableName,
+      status          as Status,
       @Semantics.user.createdBy: true
       created_by            as CreatedBy,
       @Semantics.systemDateTime.createdAt: true
@@ -33,6 +36,16 @@ define root view entity /ESRCC/I_UploadStaging
       @Semantics.systemDateTime.localInstanceLastChangedAt: true
       local_last_changed_at as LocalLastChangedAt,
       
+   case upld_stg.status
+     when 'I' then 2
+     when 'C' then 3
+     when 'E' then 1 
+     when 'W' then 2 
+     else
+     0
+    end as statuscriticallity,
+   
       //asccosiations
-      _UploadScenarios
+      _UploadScenarios,
+      _UploadStatus
 }

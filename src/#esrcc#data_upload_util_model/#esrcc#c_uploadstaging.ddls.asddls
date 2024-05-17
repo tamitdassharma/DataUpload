@@ -15,8 +15,22 @@ as projection on /ESRCC/I_UploadStaging
       DataStream,           
       @Semantics.mimeType: true
       MimeType,      
-      Filename,      
+      Filename, 
+       @Semantics.largeObject: {          
+              mimeType: 'tmpMimeType',
+              fileName: 'tmpFilename',
+              contentDispositionPreference: #INLINE
+          }   
+      @ObjectModel.virtualElementCalculatedBy: 'ABAP:/ESRCC/CL_DOWNLOADTEMPLATE'
+      virtual tmpDataStream : abap.rawstring( 0 ),           
+      @Semantics.mimeType: true
+      @ObjectModel.virtualElementCalculatedBy: 'ABAP:/ESRCC/CL_DOWNLOADTEMPLATE'
+      virtual tmpMimeType : abap.char(128),  
+      @ObjectModel.virtualElementCalculatedBy: 'ABAP:/ESRCC/CL_DOWNLOADTEMPLATE'    
+      virtual tmpFilename : abap.char(128),      
       TableName,
+      @ObjectModel.text.element: [ 'uploadstatustext' ]
+      Status,
       @Semantics.user.createdBy: true
       CreatedBy,
       @Semantics.systemDateTime.createdAt: true
@@ -27,6 +41,7 @@ as projection on /ESRCC/I_UploadStaging
       LastChangedAt,
       @Semantics.systemDateTime.localInstanceLastChangedAt: true
       LocalLastChangedAt,
-      
-      _UploadScenarios.text as applicationtext
+      statuscriticallity,
+      _UploadScenarios.text as applicationtext,
+      _UploadStatus.text as uploadstatustext
 }
